@@ -58,8 +58,7 @@ def home():
         try:
             user = bytes.decode(r.get(user_session))
             print(f'Cookie Received from user: {user}')
-            message = f'Hello {user}'
-            return render_template("home.html", msg=message, user=user, logged_in=True)
+            return render_template("home.html", msg=f'Hello {user}', user=user, logged_in=True)
         except TypeError:
             print('Cookie received is invalid')
             return render_template("home.html", msg='Login session could not be validated, please log in again',
@@ -67,9 +66,7 @@ def home():
 
     elif user_session is None:
         print("No Cookie Received")
-        message = 'Hello Guest'
-        user = 'Guest'
-        return render_template("home.html", msg=message, user=user, logged_in=False)
+        return render_template("home.html", msg='Hello Guest', user='Guest', logged_in=False)
 
 
 @app.route('/login', methods=['GET'])
@@ -141,8 +138,8 @@ def register():
         # redirect to /login page
         return render_template('login.html', msg=f'Account created with username: {user_name}, please login')
     else:
-        print('User already exist')
-        return render_template('register.html', msg='Username already in use')
+        print(f'User: {user_name} already exist')
+        return render_template('register.html', msg=f'The Username: {user_name} is already in use')
 
 
 @app.route('/logout', methods=['GET'])
@@ -154,7 +151,23 @@ def logout():
 
     message = 'You have Now been logged out'
     user = 'guest'
-    return render_template("home.html", msg=message, user=user, logged_in=False)
+    response = make_response(render_template("home.html", msg=message, user=user, logged_in=False))
+
+    response.set_cookie(key='user_session', value='', max_age=None)
+    return response
+
+
+@app.route('/secure', methods=['GET'])
+def secure_page():
+    # Get cookie from request
+    user_session = request.cookies.get('user_session')
+
+    if user_session is None or user_session == '':
+        print("No Cookie Received")
+        message = 'You need to be logged in to see this Secure Page'
+        return render_template("login.html", msg=message, user='Guest', logged_in=False)
+    elif user_session is not None:  # We have received a cookie
+        return render_template("secure.html", msg='You are logged in', user='User', logged_in=True)
 
 
 app.run()
