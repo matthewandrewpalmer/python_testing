@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+
+{% block container %}
+<h1>Login</h1>
+<p>{{ msg }}</p>
+<form action="/login" method="post">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="text" id="username" name="username">
+    <label class="mdl-textfield__label" for="username">Username</label>
+  </div>
+  <br>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="password" id="password" name="password">
+    <label class="mdl-textfield__label" for="password">Password</label>
+  </div>
+  <br>
+    <input type="submit" value="Sign Up">
+
+</form>
+{% endblock %}

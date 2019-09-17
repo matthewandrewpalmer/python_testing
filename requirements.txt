@@ -1,0 +1,5 @@
+requests
+pika
+flask==1.1.1
+redis
+uuid
