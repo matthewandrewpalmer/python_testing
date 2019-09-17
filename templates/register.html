@@ -2,8 +2,11 @@
 
 {% block container %}
 <h1>Register</h1>
-<p>{{ msg }}</p>
-<form action="/register" method="post">
+<span class="mdl-chip">
+    <span class="mdl-chip__text">{{ msg }}</span>
+</span>
+
+<form method="post">
   <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
     <input class="mdl-textfield__input" type="text" id="username" name="username">
     <label class="mdl-textfield__label" for="username">Username</label>
@@ -14,6 +17,6 @@
     <label class="mdl-textfield__label" for="password">Password</label>
   </div>
   <br>
-  <input type="submit" value="Sign Up">
+  <input class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit" value="Sign Up">
 </form>
 {% endblock %}

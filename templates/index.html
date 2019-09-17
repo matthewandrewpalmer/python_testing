@@ -22,7 +22,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <title>Material Design Lite</title>
+  <title>Random Site</title>
 
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -66,14 +66,21 @@
 <body>
   <div class="demo-layout mdl-layout mdl-layout--fixed-header mdl-js-layout mdl-color--grey-100">
     <header
-      class="demo-header mdl-layout__header mdl-layout__header--scroll mdl-color--blue mdl-color-text--grey-800">
+      class="demo-header mdl-layout__header mdl-layout__header--scroll mdl-color--grey-100 mdl-color-text--grey-800">
       <div class="mdl-layout__header-row">
         <span class="mdl-layout-title">Random Site to login into</span>
         <div class="mdl-layout-spacer"></div>
           <!-- Navigation. We hide it in small screens. -->
-      <nav class="mdl-navigation mdl-layout--large-screen-only">
-        <a class="mdl-navigation__link" href="/register">Register</a>
-        <a class="mdl-navigation__link" href="/login">Login</a>
+      <nav class="mdl-navigation mdl-color-text--grey-800 ">
+          <a class="mdl-navigation__link mdl-color-text--grey-800" href="/">Home</a>
+          {% if logged_in %}
+          <a class="mdl-navigation__link mdl-color-text--grey-800" href="">Welcome {{ user }}</a>
+          <a class="mdl-navigation__link mdl-color-text--grey-800" href="/logout">Logout</a>
+          {% else %}
+          <a class="mdl-navigation__link mdl-color-text--grey-800" href="/register">Register</a>
+          <a class="mdl-navigation__link mdl-color-text--grey-800" href="/login">Login</a>
+          {% endif %}
+
       </nav>
         <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
           <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
