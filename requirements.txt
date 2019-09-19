@@ -1,5 +1,10 @@
 requests
 pika
-flask==1.1.1
 redis
 uuid
+passlib
+
+flask==1.1.1
+flask_security
+flask-login
+Flask-SQLAlchemy

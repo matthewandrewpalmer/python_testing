@@ -2,6 +2,8 @@ import json
 import uuid
 import redis
 from flask import Flask, render_template, request, escape, make_response
+from flask_security import login_required
+from passlib.hash import pbkdf2_sha256
 
 app = Flask(__name__)
 
@@ -69,6 +71,19 @@ def home():
         return render_template("home.html", msg='Hello Guest', user='Guest', logged_in=False)
 
 
+@app.route('/users/<user_id>')
+def get_user_id(user_id):
+    user = get_user(user_id)
+    if user is None:
+        return f'User {user_id} not found'
+    return user
+
+
+def get_user(user_id):
+    r = redis.Redis(host='localhost', port=6379, db=1)
+    return r.get(user_id)
+
+
 @app.route('/login', methods=['GET'])
 def login_form():
     return render_template('login.html', msg='Please Login')
@@ -92,7 +107,7 @@ def login():
     elif user_data is not None:
         # If user found in redis
         user = json.loads(bytes.decode(user_data))
-        if password == user['password']:
+        if pbkdf2_sha256.verify(password, user['password']):
             # if submitted password match Redis password
 
             # Load Homepage
@@ -124,7 +139,7 @@ def register_form():
 def register():
     # Get Username and password from Form
     user_name = request.form['username']
-    password = request.form['password']
+    hashed_password = pbkdf2_sha256.hash(request.form['password'])
     print(f'Received username {user_name}')
 
     # Connect to redis and store username and password
@@ -133,7 +148,7 @@ def register():
     if db_user is None:
         print('New User, creating account')
 
-        r.set(str(user_name), json.dumps({'username': user_name, 'password': password}))
+        r.set(str(user_name), json.dumps({'username': user_name, 'password': hashed_password}))
 
         # redirect to /login page
         return render_template('login.html', msg=f'Account created with username: {user_name}, please login')
@@ -147,7 +162,8 @@ def logout():
     user_session = request.cookies.get('user_session')
     r = redis.Redis(host='localhost', port=6379, db=1)
 
-    r.delete(user_session)
+    if user_session != '':
+        r.delete(user_session)
 
     message = 'You have Now been logged out'
     user = 'guest'
