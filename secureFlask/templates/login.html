@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+
+{% block container %}
+<h1>Login</h1>
+<span class="mdl-chip">
+    <span class="mdl-chip__text">{{ msg }}</span>
+</span>
+
+<form action="/login" method="post">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="text" id="username" name="username">
+    <label class="mdl-textfield__label" for="username">Username</label>
+  </div>
+  <br>
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="password" id="password" name="password">
+    <label class="mdl-textfield__label" for="password">Password</label>
+  </div>
+  <br>
+    <input class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" type="submit" value="Login">
+
+</form>
+{% endblock %}
