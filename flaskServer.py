@@ -2,10 +2,12 @@ import json
 import uuid
 import redis
 from flask import Flask, render_template, request, escape, make_response
-from flask_security import login_required
 from passlib.hash import pbkdf2_sha256
 
 app = Flask(__name__)
+
+
+REDIS_HOST = 'redis'
 
 
 # Simple Hello world
@@ -25,7 +27,7 @@ def get_name():
 @app.route("/user")
 def get_user_session():
     user_id = request.cookies.get('user_id')
-    r = redis.Redis(host='localhost', port=6379, db=0)
+    r = redis.Redis(host=REDIS_HOST, port=6379, db=0)
     total = 0
 
     if user_id is not None:  # We have received a cookie
@@ -54,7 +56,7 @@ def get_user_session():
 def home():
     # Get cookie from request
     user_session = request.cookies.get('user_session')
-    r = redis.Redis(host='localhost', port=6379, db=1)
+    r = redis.Redis(host=REDIS_HOST, port=6379, db=1)
 
     if user_session is not None:  # We have received a cookie
         try:
@@ -80,7 +82,7 @@ def get_user_id(user_id):
 
 
 def get_user(user_id):
-    r = redis.Redis(host='localhost', port=6379, db=1)
+    r = redis.Redis(host=REDIS_HOST, port=6379, db=1)
     return r.get(user_id)
 
 
@@ -98,7 +100,7 @@ def login():
     print(f'Received password {password}')
 
     # Connect to redis and get password for redis
-    r = redis.Redis(host='localhost', port=6379, db=1)
+    r = redis.Redis(host=REDIS_HOST, port=6379, db=1)
     user_data = r.get(user_name)
 
     if user_data is None:
@@ -143,7 +145,7 @@ def register():
     print(f'Received username {user_name}')
 
     # Connect to redis and store username and password
-    r = redis.Redis(host='localhost', port=6379, db=1)
+    r = redis.Redis(host=REDIS_HOST, port=6379, db=1)
     db_user = r.get(user_name)
     if db_user is None:
         print('New User, creating account')
@@ -160,7 +162,7 @@ def register():
 @app.route('/logout', methods=['GET'])
 def logout():
     user_session = request.cookies.get('user_session')
-    r = redis.Redis(host='localhost', port=6379, db=1)
+    r = redis.Redis(host=REDIS_HOST, port=6379, db=1)
 
     if user_session != '':
         r.delete(user_session)
@@ -186,4 +188,6 @@ def secure_page():
         return render_template("secure.html", msg='You are logged in', user='User', logged_in=True)
 
 
-app.run()
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
+    # app.run()
