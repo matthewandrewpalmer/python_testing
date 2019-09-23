@@ -1,0 +1,11 @@
+---
+version: '3'
+services:
+  web_server:
+    build: .
+    ports:
+    - "5000:5000"
+    links:
+    - redis
+  redis:
+    image: redis
