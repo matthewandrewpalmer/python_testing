@@ -5,6 +5,9 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
+pipenv-to-reqirements = "*"
+v = {editable = true,version = "*"}
+pipenv-to-requirements = "*"
 
 [packages]
 requests = "*"
