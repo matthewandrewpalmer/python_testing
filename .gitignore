@@ -3,3 +3,4 @@
 /run/
 /shell/
 /.idea/
+__pycache__
