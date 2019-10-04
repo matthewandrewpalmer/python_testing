@@ -1,3 +1,5 @@
+# Based of Kata https://www.codewars.com/kata/regex-tic-tac-toe-win-checker/python
+
 import re
 
 gameList = ["XXX-O-O-O", "X--OOOX-X", "O--OO-XXX", "O-XOX-O-X", "OXOOXOXX-", "X-O-OOXXO", "XO--X-OOX", "X-OXOOOXX"]
